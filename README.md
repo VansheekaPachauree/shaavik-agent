@@ -4,7 +4,8 @@ An agentic AI intake assistant for Shaavik Legal, a UK legal services firm. It h
 
 ## Live demo
 
-**Try it:** [shaavik-agent.onrender.com](https://shaavik-agent.onrender.com/docs) (API) — or open `widget/test.html` after cloning to see the chat UI.
+- **Chat widget:** [vansheekapachauree.github.io/shaavik-agent](https://vansheekapachauree.github.io/shaavik-agent/)
+- **Backend API:** [shaavik-agent.onrender.com/docs](https://shaavik-agent.onrender.com/docs)
 
 > ⚠️ **Cold start:** the backend is on Render's free tier and spins down after 15 minutes of inactivity. First request after idle takes ~50 seconds; subsequent ones are fast. This is a deployment tier choice, not a code limitation.
 
@@ -61,7 +62,7 @@ The agent loop sends the user's message plus tool definitions to Gemini, execute
 Clone and set up:
 
 ```bash
-git clone https://github.com/<your-username>/shaavik-agent.git
+git clone https://github.com/VansheekaPachauree/shaavik-agent.git
 cd shaavik-agent
 
 python -m venv .venv
@@ -85,7 +86,7 @@ Run the backend:
 uvicorn app:app --reload --port 8000
 ```
 
-Then open `widget/test.html` in a browser (via Live Server or any static server).
+Then open `index.html` in a browser (via Live Server or any static server).
 
 Or run the agent in a terminal chat loop without FastAPI:
 
@@ -106,6 +107,7 @@ Working prototype. What isn't done:
 ## Files
 
     shaavik-agent/
+    ├── index.html              # Demo host page (deployed via GitHub Pages)
     ├── app.py                  # FastAPI wrapper, exception handling, session store
     ├── step5.py                # Agent loop, tools, system prompt
     ├── requirements.txt
@@ -113,5 +115,4 @@ Working prototype. What isn't done:
     ├── data/
     │   └── services.json       # Shaavik's 8 services
     └── widget/
-        ├── shaavik-widget.js   # Embeddable script
-        └── test.html           # Test host page
+        └── shaavik-widget.js   # Embeddable chat widget script

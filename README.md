@@ -2,6 +2,12 @@
 
 An agentic AI intake assistant for Shaavik Legal, a UK legal services firm. It helps visitors identify which service fits their situation, gathers consultation requirements, books appointments, and escalates urgent matters to a human — without ever giving legal advice.
 
+## Live demo
+
+**Try it:** [shaavik-agent.onrender.com](https://shaavik-agent.onrender.com/docs) (API) — or open `widget/test.html` after cloning to see the chat UI.
+
+> ⚠️ **Cold start:** the backend is on Render's free tier and spins down after 15 minutes of inactivity. First request after idle takes ~50 seconds; subsequent ones are fast. This is a deployment tier choice, not a code limitation.
+
 A working prototype, runnable locally. See "Scope and what's next" below for what's done vs. what isn't.
 
 ## Stack
@@ -91,7 +97,7 @@ python step5.py
 
 Working prototype. What isn't done:
 
-- **Not deployed.** Backend runs locally only. Production would dockerise and deploy to Render/Fly/Railway, with CORS locked to Shaavik's domain.
+- **Deployed on free tier.** Backend on Render free tier (cold-start delays). Production would use an always-on instance with CORS locked to Shaavik's domain.
 - **Mock data.** Services come from `data/services.json`; availability is a fixed list. Production would integrate Calendly for real slots and write bookings to a database or Shaavik's CMS.
 - **In-memory sessions.** Conversations live in a Python dict that resets on server restart. Production would use Redis or a database with TTL.
 - **No streaming.** Replies arrive as a single chunk. Streaming would improve perceived latency.

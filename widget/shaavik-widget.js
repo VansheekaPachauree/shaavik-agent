@@ -13,7 +13,7 @@
   if (window.__shaavikWidgetLoaded) return;
   window.__shaavikWidgetLoaded = true;
 
-  const API_URL = window.SHAAVIK_AGENT_URL || "http://localhost:8000/chat";
+  const API_URL = window.SHAAVIK_AGENT_URL || "https://shaavik-agent.onrender.com/chat";
 
   const css = `
     #shaavik-bubble {
@@ -189,6 +189,10 @@
       addMessage(
         "agent",
         "Hi, I'm Shaavik Legal's intake assistant. Tell me briefly what you need help with and I'll point you to the right service or book you in."
+      );
+      addMessage(
+        "system",
+        "First response after a quiet period can take ~50 seconds while the demo server wakes up. Subsequent replies are fast."
       );
     }
     input.focus();

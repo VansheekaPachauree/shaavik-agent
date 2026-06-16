@@ -1,0 +1,12 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+hello.py
+step2.py
+step3.py
+step4.py

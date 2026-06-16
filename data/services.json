@@ -1,0 +1,58 @@
+{
+  "commercial_contracts": {
+    "name": "Commercial Contracts",
+    "audience": "businesses",
+    "summary": "Drafting, reviewing and negotiating contracts, agreements and commercial documents.",
+    "typical_matters": ["Drafting new contracts", "Reviewing counterparty contracts", "Negotiating contract terms", "Updating standard T&Cs"],
+    "what_to_bring": "Existing draft or counterparty's draft, brief deal background, key concerns or red lines."
+  },
+  "business_disputes": {
+    "name": "Business Disputes",
+    "audience": "businesses",
+    "summary": "Correspondence, settlement discussions and practical dispute resolution support.",
+    "typical_matters": ["Commercial disputes between businesses", "Breach of contract claims", "Settlement negotiations", "Pre-action correspondence"],
+    "what_to_bring": "Relevant contracts, correspondence trail, summary of the issue and desired outcome."
+  },
+  "payment_recovery": {
+    "name": "Payment Recovery",
+    "audience": "businesses",
+    "summary": "Support with unpaid invoices, overdue payments and pre-action correspondence.",
+    "typical_matters": ["Chasing unpaid invoices", "Letters before action", "Settlement of overdue accounts"],
+    "what_to_bring": "Invoice copies, contract or PO, payment reminder history, debtor contact details."
+  },
+  "commercial_leases": {
+    "name": "Commercial Leases & Tenancy Matters",
+    "audience": "businesses",
+    "summary": "Support for landlords, tenants and businesses with commercial leases and premises issues.",
+    "typical_matters": ["Reviewing or negotiating commercial leases", "Lease renewals and break clauses", "Landlord-tenant disputes", "Repairs and dilapidations"],
+    "what_to_bring": "Copy of the lease, correspondence with the other party, summary of the issue."
+  },
+  "negotiation_support": {
+    "name": "Negotiation Support",
+    "audience": "businesses",
+    "summary": "Commercial negotiations, settlement proposals and conflict resolution.",
+    "typical_matters": ["Commercial deal negotiations", "Settlement proposals", "Conflict resolution"],
+    "what_to_bring": "Background on the other party, your objectives, any prior correspondence."
+  },
+  "copyright_trademark": {
+    "name": "Copyright & Trademark Support",
+    "audience": "businesses",
+    "summary": "Trademark searches, UK IPO filing assistance, copyright registration, IP protection.",
+    "typical_matters": ["Trademark searches", "UK IPO trademark filing", "Copyright registration", "Protecting brands and creative assets"],
+    "what_to_bring": "Brand name, logo, description of goods/services, existing IP documents."
+  },
+  "immigration_support": {
+    "name": "Immigration Support",
+    "audience": "individuals",
+    "summary": "Help with UK immigration applications, documents, and next steps.",
+    "typical_matters": ["Understanding visa requirements", "Organising supporting documents", "Preparing supporting statements"],
+    "what_to_bring": "Current immigration status, visa type, deadlines, documents collected so far."
+  },
+  "family_personal": {
+    "name": "Family & Personal Matters",
+    "audience": "individuals",
+    "summary": "Support with divorce paperwork, correspondence, settlement discussions.",
+    "typical_matters": ["Divorce paperwork", "Settlement discussions", "Correspondence with the other party"],
+    "what_to_bring": "Summary of the situation, paperwork received, desired outcome."
+  }
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Shaavik Legal — Test Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* --- Fake host page background, just so the widget has something to sit on --- */
+    body {
+      font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: #f5f5f0;
+      color: #2a2a2a;
+    }
+    h1 { font-weight: 500; }
+
+    /* --- Chat widget styles --- */
+    .chat-bubble {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #1a3a5c;
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: transform 0.2s;
+    }
+    .chat-bubble:hover { transform: scale(1.05); }
+
+    .chat-panel {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 380px;
+      height: 540px;
+      max-height: calc(100vh - 140px);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      display: none; /* hidden until bubble is clicked */
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 9999;
+    }
+    .chat-panel.open { display: flex; }
+
+    .chat-header {
+      background: #1a3a5c;
+      color: white;
+      padding: 14px 18px;
+      font-weight: 500;
+    }
+    .chat-header small {
+      display: block;
+      font-weight: 300;
+      opacity: 0.85;
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #fafaf7;
+    }
+    .msg {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+    .msg.user {
+      background: #1a3a5c;
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .msg.agent {
+      background: white;
+      color: #2a2a2a;
+      align-self: flex-start;
+      border: 1px solid #e0e0d8;
+      border-bottom-left-radius: 4px;
+    }
+    .msg.system {
+      align-self: center;
+      font-size: 12px;
+      color: #888;
+      font-style: italic;
+    }
+
+    .chat-input-row {
+      display: flex;
+      padding: 12px;
+      gap: 8px;
+      border-top: 1px solid #e0e0d8;
+      background: white;
+    }
+    .chat-input-row input {
+      flex: 1;
+      border: 1px solid #d0d0c8;
+      border-radius: 20px;
+      padding: 10px 14px;
+      font-size: 14px;
+      outline: none;
+      font-family: inherit;
+    }
+    .chat-input-row input:focus { border-color: #1a3a5c; }
+    .chat-input-row button {
+      border: none;
+      background: #1a3a5c;
+      color: white;
+      padding: 0 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .chat-input-row button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .disclaimer {
+      font-size: 11px;
+      color: #888;
+      padding: 6px 12px 10px;
+      text-align: center;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Shaavik Legal</h1>
+  <p>This is just a placeholder host page for the chat widget overlay.</p>
+
+  <!-- --- Chat widget markup --- -->
+  <button class="chat-bubble" id="chat-bubble" aria-label="Open chat">💬</button>
+
+  <div class="chat-panel" id="chat-panel">
+    <div class="chat-header">
+      Shaavik Legal Assistant
+      <small>AI intake assistant · not a solicitor · won't give legal advice</small>
+    </div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input-row">
+      <input
+        type="text"
+        id="chat-input"
+        placeholder="Tell us about your matter..."
+        autocomplete="off"
+      />
+      <button id="chat-send">Send</button>
+    </div>
+    <div class="disclaimer">
+      AI assistant. For information only. Not legal advice.
+    </div>
+  </div>
+
+  <script>
+    // --- Config ---
+    const API_URL = "http://localhost:8000/chat";
+
+    // --- DOM refs ---
+    const bubble = document.getElementById("chat-bubble");
+    const panel = document.getElementById("chat-panel");
+    const messages = document.getElementById("chat-messages");
+    const input = document.getElementById("chat-input");
+    const sendBtn = document.getElementById("chat-send");
+
+    // --- State ---
+    let sessionId = null;
+    let busy = false;
+
+    // --- Open / close panel ---
+    bubble.addEventListener("click", () => {
+      panel.classList.toggle("open");
+      if (panel.classList.contains("open") && messages.children.length === 0) {
+        // Greeting on first open
+        addMessage(
+          "agent",
+          "Hi, I'm Shaavik Legal's intake assistant. Tell me briefly what you need help with and I'll point you to the right service or book you in."
+        );
+      }
+      input.focus();
+    });
+
+    // --- Add a message bubble to the chat ---
+    function addMessage(role, text) {
+      const div = document.createElement("div");
+      div.className = `msg ${role}`;
+      div.textContent = text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    // --- Send a message to the backend ---
+    async function send() {
+      const text = input.value.trim();
+      if (!text || busy) return;
+
+      addMessage("user", text);
+      input.value = "";
+      busy = true;
+      sendBtn.disabled = true;
+
+      // Typing indicator
+      const typing = document.createElement("div");
+      typing.className = "msg agent";
+      typing.textContent = "...";
+      messages.appendChild(typing);
+      messages.scrollTop = messages.scrollHeight;
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text, session_id: sessionId }),
+        });
+        typing.remove();
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          addMessage(
+            "system",
+            err.detail || `Error ${res.status}. Please try again.`
+          );
+          return;
+        }
+
+        const data = await res.json();
+        sessionId = data.session_id;
+        addMessage("agent", data.reply);
+      } catch (e) {
+        typing.remove();
+        addMessage("system", "Couldn't reach the assistant. Check your connection.");
+        console.error(e);
+      } finally {
+        busy = false;
+        sendBtn.disabled = false;
+        input.focus();
+      }
+    }
+
+    sendBtn.addEventListener("click", send);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") send();
+    });
+  </script>
+</body>
+</html>
